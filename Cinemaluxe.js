@@ -1,55 +1,40 @@
-module.exports = {
-  name: "Cinemaluxe",
-  site: "https://cinemalux.zip",
+const cheerio = require("cheerio-without-node-native");
 
-  getList: async function () {
-    const res = await fetch("https://cinemalux.zip/page/1");
-    const html = await res.text();
-    const $ = require("cheerio-without-node-native").load(html);
+function getStreams(tmdbId, type, season, episode) {
+  const url = "https://cinemalux.zip";
 
-    const items = [];
-    $("article.item").each((i, el) => {
-      const title = $(el).find("img").attr("alt");
-      const link = $(el).find("a").attr("href");
-      const poster = $(el).find("img").attr("data-src");
-      items.push({ title, link, poster });
-    });
+  return fetch(url)
+    .then(res => res.text())
+    .then(html => {
+      const $ = cheerio.load(html);
+      const firstLink = $("article.item a").first().attr("href");
 
-    return items;
-  },
+      if (!firstLink) return [];
 
-  search: async function (query) {
-    const res = await fetch(`https://cinemalux.zip/?s=${encodeURIComponent(query)}`);
-    const html = await res.text();
-    const $ = require("cheerio-without-node-native").load(html);
+      return fetch(firstLink)
+        .then(res2 => res2.text())
+        .then(html2 => {
+          const match = html2.match(/"link":"([^"]+)"/);
+          if (!match) return [];
 
-    const results = [];
-    $("div.result-item").each((i, el) => {
-      const title = $(el).find(".title").text();
-      const link = $(el).find("a").attr("href");
-      const poster = $(el).find("img").attr("src");
-      results.push({ title, link, poster });
-    });
+          const encoded = match[1].replace(/\\\//g, "/");
+          const decoded = atob(encoded);
 
-    return results;
-  },
+          return [
+            {
+              name: "Cinemaluxe",
+              title: "Cinemaluxe Stream",
+              url: decoded,
+              quality: "HD",
+              type: "mp4",
+              behaviorHints: {
+                bingeGroup: "cinemaluxe"
+              }
+            }
+          ];
+        });
+    })
+    .catch(() => []);
+}
 
-  getStreams: async function (url) {
-    const res = await fetch(url);
-    const html = await res.text();
-
-    const match = html.match(/"link":"([^"]+)"/);
-    if (!match) return [];
-
-    const encoded = match[1].replace(/\\\//g, "/");
-    const decoded = atob(encoded);
-
-    return [
-      {
-        url: decoded,
-        name: "Cinemaluxe Stream",
-        type: "mp4",
-      },
-    ];
-  },
-};
+module.exports = { getStreams };
