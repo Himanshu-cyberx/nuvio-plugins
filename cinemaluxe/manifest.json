@@ -1,16 +1,12 @@
 {
   "id": "cinemaluxe",
-  "name": "CinemaLuxe (converted)",
+  "name": "CinemaLuxe",
   "version": "1.0.0",
-  "description": "Converted CinemaLuxe provider from CloudStream Kotlin to Nuvio JS.",
-  "author": "converted-by-chatgpt",
-  "types": ["movie","series"],
-  "resources": ["search","meta","stream","home"],
-  "icon": "https://cinemalux.zip/favicon.ico",
   "language": "hi",
-  "minNuvioVersion": "1.0.0",
-  "catalogs": [
-    { "type": "movie", "id": "cinemaluxe_movies", "name": "CinemaLuxe Movies" },
-    { "type": "series", "id": "cinemaluxe_series", "name": "CinemaLuxe Series" }
-  ]
+  "type": "stream",
+  "author": "Himanshu Tyagi",
+  "url": "https://cinemalux.zip",
+  "description": "Provides movie and TV streaming links from CinemaLuxe.",
+  "hasDownloadSupport": true,
+  "supportedTypes": ["movie", "series"]
 }
