@@ -30,6 +30,13 @@ async function initMainUrl() {
 }
 initMainUrl();
 
+async function getTitleFromImdbId(imdbId) {
+    const url = `https://www.imdb.com/title/${imdbId}/`;
+    const $ = await fetchDocument(url);
+    const title = $('head > title').text().replace(' - IMDb', '').trim();
+    return title;
+}
+
 async function makePostRequest(jsonString, url, action) {
   let item;
   try {
@@ -116,7 +123,7 @@ async function getMainPage(categoryPath, page = 1) {
     $('article.item').each((i, el) => {
         const title = $(el).find('img').attr('alt') || $(el).find('.title').text().trim();
         const href = $(el).find('a').attr('href') || '';
-        const poster = $(el).find('img').attr('data-src') || $(el).find('img').attr('src') || null;
+        const poster = $(el).find('img').attr('data-src') || $(el).find('img').src || null;
         if (title && href) {
             home.push({
                 id: new URL(href, MAIN_URL).toString(),
@@ -253,5 +260,6 @@ module.exports = {
   getMainPage,
   search,
   meta: load,
-  stream: resolveStreams
+  stream: resolveStreams,
+  getTitleFromImdbId
 };
