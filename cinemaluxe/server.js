@@ -8,7 +8,11 @@ builder.defineCatalogHandler(async ({ type, id, extra }) => {
   let results = [];
 
   if (extra.search) {
-    const searchResults = await provider.search(extra.search);
+    let searchQuery = extra.search;
+    if (searchQuery.startsWith('tt')) {
+        searchQuery = await provider.getTitleFromImdbId(searchQuery);
+    }
+    const searchResults = await provider.search(searchQuery);
     results = searchResults.results;
   } else {
     if (type === 'movie' && id === 'cinemaluxe-movies') {
