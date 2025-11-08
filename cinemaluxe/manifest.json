@@ -1,12 +1,28 @@
 {
-  "id": "cinemaluxe",
-  "name": "CinemaLuxe",
+  "id": "org.cinemaluxe.stremio",
   "version": "1.0.0",
-  "language": "hi",
-  "type": "stream",
-  "author": "Himanshu Tyagi",
-  "url": "https://cinemalux.zip",
+  "name": "CinemaLuxe",
   "description": "Provides movie and TV streaming links from CinemaLuxe.",
-  "hasDownloadSupport": true,
-  "supportedTypes": ["movie", "series"]
+  "logo": "https://raw.githubusercontent.com/SaurabhKaperwan/Images/main/cinemaluxe.png",
+  "resources": [
+    "catalog",
+    "meta",
+    "stream"
+  ],
+  "types": [
+    "movie",
+    "series"
+  ],
+  "catalogs": [
+    {
+      "type": "movie",
+      "id": "cinemaluxe-movies",
+      "name": "CinemaLuxe Movies"
+    },
+    {
+      "type": "series",
+      "id": "cinemaluxe-series",
+      "name": "CinemaLuxe Series"
+    }
+  ]
 }
