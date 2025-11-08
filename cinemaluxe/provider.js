@@ -13,7 +13,8 @@ async function fetchText(url, opts = {}) {
 }
 
 async function fetchDocument(url, opts = {}) {
-  const txt = await fetchText(url, opts);
+  const absoluteUrl = new URL(url, MAIN_URL).toString();
+  const txt = await fetchText(absoluteUrl, opts);
   return cheerio.load(txt);
 }
 
